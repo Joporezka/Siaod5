@@ -107,10 +107,16 @@ void insertToSorted(Node*& head, float inp){
     NewItem->next = nullptr;
     Node* temp = head;
     while(temp != nullptr){
-        if(temp->next == nullptr or (inp >= temp->data and inp<= temp->next->data)){
-            NewItem->next = temp->next;
-            temp->next = NewItem;
+        if(inp<= head->data){
+            NewItem->next = head;
+            head = NewItem;
             break;
+        }else{
+            if(temp->next == nullptr or (inp >= temp->data and inp<= temp->next->data)){
+                NewItem->next = temp->next;
+                temp->next = NewItem;
+                break;
+            }
         }
         temp = temp->next;
     }
