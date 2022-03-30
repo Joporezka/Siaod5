@@ -1,4 +1,6 @@
 #include <iostream>
+#include <windows.h>
+
 using namespace std;
 
 struct Node{
@@ -17,6 +19,7 @@ void printNode(Node*& L){
         tmp=tmp->next;
         cout<<tmp->data<<" ";
     }
+    cout<<endl;
 }
 
 
@@ -25,6 +28,19 @@ void push(Node **head, float data) {
     tmp->data = data;
     tmp->next = (*head);
     (*head) = tmp;
+}
+void push_back(Node*& head, float inp){
+    Node *NewItem=new Node;
+    NewItem->data=inp;
+    NewItem->next = NULL;
+    if (head == NULL) {
+        head = NewItem;
+    }else{
+        Node *Current=head;
+        for(int i=1;Current->next!=NULL; i++)
+            Current=Current->next;
+        Current->next = NewItem;
+    }
 }
 
 float pop(Node **head) {
@@ -40,52 +56,41 @@ float pop(Node **head) {
     return val;
 }
 
-bool isInList(float el, Node*& head){
-    Node* tmp=head;
-    if(head==NULL) return false;
-
-    while(true){
-        if(tmp->data == el){
-            return true;
-        }
-        if(tmp->next!=NULL){
-            tmp = tmp->next;
-        }else{
-            break;
-        }
-    }
-    return false;
-}
-
-
 void firstTask(Node* &head1, Node* &head2,Node* &headMain){
     Node* tmp1=head1;
     Node* tmp2=head2;
     Node* tmpMain=headMain;
-    while(true){
-        if(isInList(tmp1->data, tmp2) && !isInList(tmp1->data, headMain)){
-            push(&headMain,tmp1->data);
-        }
-        if(tmp1->next!=NULL){
-            tmp1 = tmp1->next;
-        }else{
-            break;
-        }
+    while(tmp1!=nullptr && tmp2!=nullptr){
+            if(tmp1->data < tmp2->data){
+                push_back(headMain,tmp1->data);
+                tmp1=tmp1->next;
+            }else{
+                push_back(headMain,tmp2->data);
+                tmp2=tmp2->next;
+            }
+    }
+    while (tmp1!=nullptr){
+        push_back(headMain,tmp1->data);
+        tmp1=tmp1->next;
+    }
+    while (tmp2!=nullptr){
+        push_back(headMain,tmp2->data);
+        tmp2=tmp2->next;
     }
 }
 
-void Delete_Item_Single_List(Node* &head,int Number){
-    Node *ptr;//вспомогательный указатель
+void pop_by_num(Node* &head,int Number){
+    Node *ptr;
     Node *Current = head;
-    for (int i = 1; i < Number && Current != NULL; i++)
+    for (int i = 1; i < Number && Current != nullptr; i++)
         Current = Current->next;
-    if (Current != NULL){//проверка на корректность
-        if (Current == head){//удаляем первый элемент
+    if (Current != nullptr){
+        if (Current == head){
             head = head->next;
             delete(Current);
             Current = head;
         }
-        else {//удаляем непервый элемент
+        else {
             ptr = head;
             while (ptr->next != Current)
                 ptr = ptr->next;
@@ -95,47 +100,29 @@ void Delete_Item_Single_List(Node* &head,int Number){
         }
     }
 }
-bool second(Node* &Head){
-    Node* ptr; //вспомогательным указатель
-    for (int i=1;ptr != NULL;i++){//пока не конец списка
-        if(i==30) cout<<"fuck";
-        if (ptr->next->data<0){
-            Delete_Item_Single_List(Head,i);
-        }
 
-        ptr = ptr->next;
+void insertToSorted(Node*& head, float inp){
+    Node *NewItem=new Node;
+    NewItem->data=inp;
+    NewItem->next = nullptr;
+    Node* temp = head;
+    while(temp != nullptr){
+        if(temp->next == nullptr or (inp >= temp->data and inp<= temp->next->data)){
+            NewItem->next = temp->next;
+            temp->next = NewItem;
+            break;
+        }
+        temp = temp->next;
     }
-    return false;
 }
-/*void secondTask(Node* &head2){
-    Node* ptr;
-    Node* tmp2=head2;
 
-    while(tmp2!= nullptr){
-        if(tmp2->next != nullptr &&tmp2->next->data<0){
-            if(tmp2 == head2){
-                head2 = head2->next;
-                delete(tmp2);
-                tmp2 = head2;
 
-            }else{
-                ptr = head2;
-                while (ptr->next != tmp2)
-                    ptr = ptr->next;
-                ptr->next = tmp2->next;
-                delete(tmp2);
-                tmp2=ptr;
-            }
-        }else{
-            tmp2 = tmp2->next;
-        }
-    }
-}*/
 
 int main() {
-    Node* headList1 = NULL;
-    Node* headList2 = NULL;
-    Node* headListMain = NULL;
+    SetConsoleOutputCP(CP_UTF8);
+    Node* headList1 = nullptr;
+    Node* headList2 = nullptr;
+    Node* headListMain = nullptr;
     cout<<"Type length of L1 and L2\n";
     int len1,len2;
     cin>>len1>>len2;
@@ -144,28 +131,26 @@ int main() {
     cout<<"Fill L1\n";
     for(int i=0;i<len1;i++){
         cin>>temp;
-        push(&headList1,temp);
+        push_back(headList1,temp);
     }
-    //printNode(headList1);
 
     cout<<"Fill L2\n";
     for(int i=0;i<len2;i++){
         cin>>temp;
-        push(&headList2,temp);
+        push_back(headList2,temp);
     }
-    //printNode(headList2);
 
-    //cout<<"Answer for task 1: \n";
-    //firstTask(headList1,headList2,headListMain);
-    //printNode(headListMain);
+    firstTask(headList1,headList2,headListMain);
+    printNode(headListMain);
+    cout<<"Введите номер для удаления:\n";
+    int index;
+    cin>>index;
+    pop_by_num(headListMain,index);
+    printNode(headListMain);
 
-    cout<<"Answer for task 2: \n";
-    second(headList2);
-    printNode(headList2);
-
-
-
-
-
-
+    cout<<"Введите значение для вставки:\n";
+    cin>>temp;
+    insertToSorted(headListMain,temp);
+    printNode(headListMain);
+    return 0;
 }
