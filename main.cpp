@@ -4,7 +4,7 @@
 using namespace std;
 
 struct Node{
-    float data;
+    int data;
     Node *next;
 };
 
@@ -23,13 +23,13 @@ void printNode(Node*& L){
 }
 
 
-void push(Node **head, float data) {
+void push(Node **head, int data) {
     Node *tmp = new Node;
     tmp->data = data;
     tmp->next = (*head);
     (*head) = tmp;
 }
-void push_back(Node*& head, float inp){
+void push_back(Node*& head, int inp){
     Node *NewItem=new Node;
     NewItem->data=inp;
     NewItem->next = NULL;
@@ -43,9 +43,9 @@ void push_back(Node*& head, float inp){
     }
 }
 
-float pop(Node **head) {
+int pop(Node **head) {
     Node* prev = NULL;
-    float val;
+    int val;
     if (head == NULL) {
         exit(-1);
     }
@@ -101,7 +101,7 @@ void pop_by_num(Node* &head,int Number){
     }
 }
 
-void insertToSorted(Node*& head, float inp){
+void insertToSorted(Node*& head, int inp){
     Node *NewItem=new Node;
     NewItem->data=inp;
     NewItem->next = nullptr;
@@ -133,7 +133,7 @@ int main() {
     int len1,len2;
     cin>>len1>>len2;
 
-    float temp;
+    int temp;
     cout<<"Fill L1\n";
     for(int i=0;i<len1;i++){
         cin>>temp;
