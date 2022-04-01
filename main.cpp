@@ -8,6 +8,7 @@ struct Node{
     Node *next;
 };
 
+
 void printNode(Node*& L){
     Node* tmp=L;
     if(tmp==NULL){
@@ -43,18 +44,6 @@ void push_back(Node*& head, int inp){
     }
 }
 
-int pop(Node **head) {
-    Node* prev = NULL;
-    int val;
-    if (head == NULL) {
-        exit(-1);
-    }
-    prev = (*head);
-    val = prev->data;
-    (*head) = (*head)->next;
-    free(prev);
-    return val;
-}
 
 void firstTask(Node* &head1, Node* &head2,Node* &headMain){
     Node* tmp1=head1;
@@ -92,7 +81,7 @@ void pop_by_num(Node* &head,int Number){
         }
         else {
             ptr = head;
-            while (ptr->next != Current)
+            while (ptr->next != C urrent)
                 ptr = ptr->next;
             ptr->next = Current->next;
             delete(Current);
