@@ -81,7 +81,7 @@ void pop_by_num(Node* &head,int Number){
         }
         else {
             ptr = head;
-            while (ptr->next != C urrent)
+            while (ptr->next != Current)
                 ptr = ptr->next;
             ptr->next = Current->next;
             delete(Current);
